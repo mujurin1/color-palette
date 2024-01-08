@@ -1,4 +1,3 @@
-import { atom, useRecoilState } from "recoil";
 import { rgbToCssString } from "./lib";
 import { PaletteState } from "./PaletteState";
 import { TileState } from "./TileState";

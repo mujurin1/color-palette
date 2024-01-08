@@ -1,4 +1,4 @@
-import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { COLOR, rgbGradation, rgbToCssString } from "./lib";
 import { useState } from "react";
 
