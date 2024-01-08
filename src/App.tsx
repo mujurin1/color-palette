@@ -15,7 +15,8 @@ function App() {
       {paletteState == null ?
         <div>
           <div>
-            TODO: ハマったマスを固定するかの選択肢を付ける（プレイ中に切り替えられる）
+            TODO: ハマったマスを固定するかの選択肢を付ける（プレイ中に切り替えられる予定）<br />
+            現在は固定なし（クリアしたらクリアと出ます）
           </div>
 
           <button onClick={() =>

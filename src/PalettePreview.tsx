@@ -109,7 +109,7 @@ export function ShowPalettePreview({ width, height, colors, scale }: { width: nu
     <div className="palette"
       style={{ width: 80 * width * scale_, height: 80 * height * scale_ }}>
       {colors.map((color, i) => {
-        const top = Math.floor(i / width);
+        const top = Math.floor(i / height);
         const left = i % width;
         return (
           <div

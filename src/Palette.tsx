@@ -19,40 +19,55 @@ import { ShowPalettePreview } from "./PalettePreview";
 
 export function Palette({ paletteState }: { paletteState: PaletteState; }) {
   const [palette, setPalette] = useState(paletteState);
+  const [clear, setClear] = useState(false);
   const { tiles } = palette;
 
   const selectTile = (tile: TileState) => {
-    setPalette(
-      PaletteState.selectTile(palette, tile.x, tile.y)
-    );
+    const newPalette = PaletteState.selectTile(palette, tile.x, tile.y);
+    setPalette(newPalette);
+
+    if (PaletteState.isClear(newPalette)) {
+      setClear(true);
+    } else {
+      setClear(false);
+    }
   };
 
   return (
-    <div style={{
-      margin: 20,
-      display: "grid",
-      // gridTemplateColumns: "repeat(auto-fill, 1fr)",
-      gridAutoFlow: "column",
-      gap: 10,
-      justifyContent: "left"
-      // display: "flex",
-      // flexWrap: "wrap",
-    }}>
-      <div className="palette" style={{ width: 80 * paletteState.width, height: 80 * paletteState.height }}>
-        {tiles.map((tile, i) => {
-          const selected = PaletteState.isSelect(palette, tile);
-          return <Tile key={i} tile={tile} select={selectTile} selected={selected} />;
-        }
-        )}
-      </div>
+    <div>
+      {
+        !clear ? undefined :
+          <div>
+            クリア
+          </div>
+      }
 
-      <ShowPalettePreview
-        width={paletteState.width}
-        height={paletteState.height}
-        colors={paletteState.preview}
-        scale={0.5}
-      />
-    </div >
+      <div style={{
+        margin: 20,
+        display: "grid",
+        // gridTemplateColumns: "repeat(auto-fill, 1fr)",
+        gridAutoFlow: "column",
+        gap: 10,
+        justifyContent: "left"
+        // display: "flex",
+        // flexWrap: "wrap",
+      }}>
+        <div className="palette" style={{ width: 80 * paletteState.width, height: 80 * paletteState.height }}>
+          {tiles.map((tile, i) => {
+            const selected = PaletteState.isSelect(palette, tile);
+            return <Tile key={i} tile={tile} select={selectTile} selected={selected} />;
+          }
+          )}
+        </div>
+
+        <ShowPalettePreview
+          width={paletteState.width}
+          height={paletteState.height}
+          colors={paletteState.preview}
+          scale={0.5}
+        />
+      </div >
+    </div>
   );
 }
 

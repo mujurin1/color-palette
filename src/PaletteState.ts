@@ -28,6 +28,9 @@ export const PaletteState = {
 
     return select.x === tile.x && select.y === tile.y;
   },
+  isClear: (palette: PaletteState): boolean => {
+    return palette.tiles.every(tile => tile.x === tile.answerX && tile.y === tile.answerY);
+  },
 
   create: (
     width: number,
