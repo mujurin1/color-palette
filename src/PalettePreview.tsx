@@ -44,7 +44,7 @@ export function PalettePreview() {
               setPalettePreview(old => ({
                 ...old,
                 width,
-                colors: rgbGradation(width, old.height, defaultCorner),
+                colors: rgbGradation(width, old.height, cornerColor),
               }));
             }} />
         </div>
@@ -58,7 +58,7 @@ export function PalettePreview() {
               setPalettePreview(old => ({
                 ...old,
                 height,
-                colors: rgbGradation(old.width, height, defaultCorner),
+                colors: rgbGradation(old.width, height, cornerColor),
               }));
             }} />
         </div>
