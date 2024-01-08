@@ -1,14 +1,12 @@
-import { TileState } from "./TileState";
 import { COLOR } from "./lib";
 
 export interface PaletteState {
   width: number;
   height: number;
-  tiles: TileState[];
+  tiles: number[];
 
   readonly preview: COLOR[];
-
-  select: undefined | { x: number, y: number; };
+  select: number | undefined;
 
   hold: undefined | {
     x: number,
@@ -22,14 +20,15 @@ export interface PaletteState {
 }
 
 export const PaletteState = {
-  isSelect: (palette: PaletteState, tile: TileState): boolean => {
-    const select = palette.select;
-    if (select == null) return false;
+  // isSelect: (palette: PaletteState, tile: TileState): boolean => {
+  //   const select = palette.select;
+  //   if (select == null) return false;
 
-    return select.x === tile.x && select.y === tile.y;
-  },
+  //   return select.x === tile.x && select.y === tile.y;
+  // },
   isClear: (palette: PaletteState): boolean => {
-    return palette.tiles.every(tile => tile.x === tile.answerX && tile.y === tile.answerY);
+    return palette.tiles.every((a, b) => a === b);
+    // return palette.tiles.every(tile => tile.x === tile.answerX && tile.y === tile.answerY);
   },
 
   create: (
@@ -37,17 +36,9 @@ export const PaletteState = {
     height: number,
     colors: COLOR[],
   ): PaletteState => {
-    const tiles: TileState[] = [];
-
-    const shuffledColor = [...colors];
-    shuffledColor.sort(() => Math.random() - 0.5);
-
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        const color = shuffledColor[y * width + x];
-        tiles.push(TileState.create(color, x, y));
-      }
-    }
+    let tiles: number[] = [];
+    for (let i = 0; i < width * height; i++) tiles.push(i);
+    tiles = tiles.sort(() => Math.random() - 0.5);
 
     return {
       width,
@@ -61,41 +52,29 @@ export const PaletteState = {
       holdMatchedTile: false,
     };
   },
-  selectTile: (palette: PaletteState, x: number, y: number): PaletteState => {
+  selectTile: (palette: PaletteState, index: number): PaletteState => {
     if (palette.select != null) {
-      return PaletteState.swapTile(palette, { x, y }, palette.select);
+      return PaletteState.swapTile(palette, index, palette.select);
     }
 
     return {
       ...palette,
-      select: { x, y }
+      select: index
     };
   },
   swapTile: (
     palette: PaletteState,
-    pointA: { x: number, y: number; },
-    pointB: { x: number, y: number; },
+    pointA: number,
+    pointB: number,
   ): PaletteState => {
     const tiles = [...palette.tiles];
-    const posA = pointA.y * palette.width + pointA.x;
-    const posB = pointB.y * palette.width + pointB.x;
-    const tileA = tiles[posA];
-    const tileB = tiles[posB];
-
-    tiles[posA] = {
-      ...tileB,
-      x: pointA.x,
-      y: pointA.y,
-    };
-    tiles[posB] = {
-      ...tileA,
-      x: pointB.x,
-      y: pointB.y,
-    };
+    const temp = tiles[pointA];
+    tiles[pointA] = tiles[pointB];
+    tiles[pointB] = temp;
 
     return {
       ...palette,
-      tiles,
+      tiles: tiles,
       hold: undefined,
       select: undefined,
     };

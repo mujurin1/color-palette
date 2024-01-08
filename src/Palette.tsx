@@ -1,6 +1,5 @@
 import { rgbToCssString } from "./lib";
 import { PaletteState } from "./PaletteState";
-import { TileState } from "./TileState";
 import { useState } from "react";
 import { ShowPalettePreview } from "./PalettePreview";
 
@@ -22,15 +21,12 @@ export function Palette({ paletteState }: { paletteState: PaletteState; }) {
   const [clear, setClear] = useState(false);
   const { tiles } = palette;
 
-  const selectTile = (tile: TileState) => {
-    const newPalette = PaletteState.selectTile(palette, tile.x, tile.y);
+  const selectTile = (index: number) => {
+    const newPalette = PaletteState.selectTile(palette, index);
     setPalette(newPalette);
+    setClear(PaletteState.isClear(newPalette));
+    console.log(newPalette.tiles);
 
-    if (PaletteState.isClear(newPalette)) {
-      setClear(true);
-    } else {
-      setClear(false);
-    }
   };
 
   return (
@@ -53,11 +49,10 @@ export function Palette({ paletteState }: { paletteState: PaletteState; }) {
         // flexWrap: "wrap",
       }}>
         <div className="palette" style={{ width: 80 * paletteState.width, height: 80 * paletteState.height }}>
-          {tiles.map((tile, i) => {
-            const selected = PaletteState.isSelect(palette, tile);
-            return <Tile key={i} tile={tile} select={selectTile} selected={selected} />;
-          }
-          )}
+          {tiles.map((_, i) => {
+            const selected = palette.select === i;
+            return <Tile key={i} palette={palette} index={i} select={selectTile} selected={selected} />;
+          })}
         </div>
 
         <ShowPalettePreview
@@ -72,22 +67,28 @@ export function Palette({ paletteState }: { paletteState: PaletteState; }) {
 }
 
 interface TileParam {
-  tile: TileState;
+  palette: PaletteState;
+  index: number;
   selected: boolean;
 
-  select: (tile: TileState) => void;
+  select: (index: number) => void;
 }
 
-function Tile({ tile, selected, select }: TileParam) {
+function Tile({ palette, index, selected, select }: TileParam) {
+  const value = palette.tiles[index];
+  const color = palette.preview[value];
+  const x = index % palette.width;
+  const y = Math.floor(index / palette.width);
+
   return (
     <div
       className={selected ? "select-tile tile" : "tile"}
       style={{
-        top: `${tile.y * 80}px`,
-        left: `${tile.x * 80}px`,
-        backgroundColor: rgbToCssString(tile.color),
+        top: y * 80,
+        left: x * 80,
+        backgroundColor: rgbToCssString(color),
       }}
-      onClick={_ => select(tile)}
+      onClick={_ => select(index)}
     />
   );
 }
