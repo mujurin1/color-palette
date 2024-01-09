@@ -31,7 +31,9 @@ export const PaletteState = {
   ): PaletteState => {
     let tiles: number[] = [];
     for (let i = 0; i < width * height; i++) tiles.push(i);
-    tiles = tiles.sort(() => Math.random() - 0.5);
+    do {
+      tiles = tiles.sort(() => Math.random() - 0.5);
+    } while (tiles.some((value, i) => value === i));
 
     return {
       width,
