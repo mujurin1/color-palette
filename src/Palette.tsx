@@ -1,6 +1,5 @@
 import { rgbToCssString } from "./lib";
 import { PaletteState } from "./PaletteState";
-import { useState } from "react";
 import { ShowPalettePreview } from "./PalettePreview";
 import { optionsState } from "./Options";
 import { atom, useRecoilState, useRecoilValue } from "recoil";

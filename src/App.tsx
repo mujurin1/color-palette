@@ -56,7 +56,7 @@ interface PlayParam {
 }
 
 function Play({ state, finish }: PlayParam) {
-  const { startTime, cleared } = state;
+  const { startTime } = state;
 
   // 1秒に1回時間を更新するため
   const [, update] = useState(0);
