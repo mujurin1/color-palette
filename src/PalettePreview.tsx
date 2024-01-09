@@ -2,13 +2,20 @@ import { atom, useRecoilState } from "recoil";
 import { COLOR, rgbGradation, rgbToCssString } from "./lib";
 import { useState } from "react";
 
-const defaultCorner = [
+const defaultCorner: [COLOR, COLOR, COLOR] = [
   [240, 120, 120],
   [120, 240, 120],
   [120, 120, 240]
-] as [COLOR, COLOR, COLOR];
+] as const;
 
-export const palettePreviewState = atom({
+export interface PalettePreview {
+  width: number;
+  height: number;
+  cornerColor: [COLOR, COLOR, COLOR];
+  colors: COLOR[];
+}
+
+export const palettePreviewState = atom<PalettePreview>({
   key: "palettePreviewState",
   default: {
     width: 7,
