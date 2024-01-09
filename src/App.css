@@ -27,3 +27,10 @@
   transform: scale(1.2);
   z-index: 1;
 }
+
+/* オプション */
+.options {
+  margin: 10px;
+}
+
+/* オプション */

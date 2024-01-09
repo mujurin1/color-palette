@@ -2,6 +2,8 @@ import { rgbToCssString } from "./lib";
 import { PaletteState } from "./PaletteState";
 import { useState } from "react";
 import { ShowPalettePreview } from "./PalettePreview";
+import { Options, optionsState } from "./Options";
+import { useRecoilValue } from "recoil";
 
 // export const paletteState = atom<PaletteState>({
 //   key: "paletteState",
@@ -17,6 +19,8 @@ import { ShowPalettePreview } from "./PalettePreview";
 
 
 export function Palette({ paletteState }: { paletteState: PaletteState; }) {
+  const options = useRecoilValue(optionsState);
+
   const [palette, setPalette] = useState(paletteState);
   const [clear, setClear] = useState(false);
   const { tiles } = palette;
@@ -55,13 +59,17 @@ export function Palette({ paletteState }: { paletteState: PaletteState; }) {
           })}
         </div>
 
-        <ShowPalettePreview
-          width={paletteState.width}
-          height={paletteState.height}
-          colors={paletteState.colors}
-          scale={0.5}
-        />
+        {
+          options.preview === "show" ?
+            <ShowPalettePreview
+              width={paletteState.width}
+              height={paletteState.height}
+              colors={paletteState.colors}
+              scale={0.5}
+            /> : undefined
+        }
       </div >
+
     </div>
   );
 }
@@ -76,6 +84,8 @@ interface TileParam {
 }
 
 function Tile({ palette, index, selected, fitted, select }: TileParam) {
+  const options = useRecoilValue(optionsState);
+
   const value = palette.tiles[index];
   const color = palette.colors[value];
   const x = index % palette.width;
@@ -83,7 +93,7 @@ function Tile({ palette, index, selected, fitted, select }: TileParam) {
 
   let className = "tile";
   if (selected) className += " tile-select";
-  if (fitted) className += " tile-fitted";
+  if (options.fittedTile !== "none" && fitted) className += " tile-fitted";
 
   return (
     <div
@@ -93,7 +103,11 @@ function Tile({ palette, index, selected, fitted, select }: TileParam) {
         left: x * 80,
         backgroundColor: rgbToCssString(color),
       }}
-      onClick={_ => select(index)}
+      onClick={_ => {
+        if (options.fittedTile === "lock" && fitted) return;
+
+        select(index);
+      }}
     />
   );
 }

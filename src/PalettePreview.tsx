@@ -34,69 +34,71 @@ export function PalettePreview() {
 
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <fieldset style={{ margin: "10px 0px" }}>
+        <legend>パレットの設定</legend>
         <div style={{ display: "flex" }}>
-          <div style={{ width: 125 }}>横の分割数: {palettePreview.width}</div>
-          <input type="range" value={palettePreview.width}
-            max={20}
-            onChange={e => {
-              const width = e.target.valueAsNumber;
-              setPalettePreview(old => ({
-                ...old,
-                width,
-                colors: rgbGradation(width, old.height, cornerColor),
-              }));
-            }} />
+          <div style={{ display: "flex" }}>
+            <div style={{ width: 125 }}>横の分割数: {palettePreview.width}</div>
+            <input type="range" value={palettePreview.width}
+              max={20}
+              onChange={e => {
+                const width = e.target.valueAsNumber;
+                setPalettePreview(old => ({
+                  ...old,
+                  width,
+                  colors: rgbGradation(width, old.height, cornerColor),
+                }));
+              }} />
+          </div>
+
+          <div style={{ display: "flex" }}>
+            <div style={{ width: 125 }}>縦の分割数: {palettePreview.height}</div>
+            <input type="range" value={palettePreview.height}
+              max={20}
+              onChange={e => {
+                const height = e.target.valueAsNumber;
+                setPalettePreview(old => ({
+                  ...old,
+                  height,
+                  colors: rgbGradation(old.width, height, cornerColor),
+                }));
+              }} />
+          </div>
+        </div >
+
+        <div style={{ display: "flex" }}>
+          {
+            cornerColor.map((color, i) =>
+              <div key={i} style={{ display: "flex", flexDirection: "column" }}>
+                {i === 0 ? "左上の色" : i === 1 ? "右上の色" : "左下の色"}
+                <div style={{ display: "flex" }}>
+                  <div style={{ width: 60 }}>R: {color[0]}</div>
+                  <input type="range" value={color[0]} max={255}
+                    onChange={e => changeColor(i, 0, e.target.valueAsNumber)}
+                  />
+                </div>
+                <div style={{ display: "flex" }}>
+                  <div style={{ width: 60 }}>G: {color[1]}</div>
+                  <input type="range" value={color[1]} max={255}
+                    onChange={e => changeColor(i, 1, e.target.valueAsNumber)}
+                  />
+                </div>
+                <div style={{ display: "flex" }}>
+                  <div style={{ width: 60 }}>B: {color[2]}</div>
+                  <input type="range" value={color[2]} max={255}
+                    onChange={e => changeColor(i, 2, e.target.valueAsNumber)}
+                  />
+                </div>
+              </div>
+            )
+          }
         </div>
 
-        <div style={{ display: "flex" }}>
-          <div style={{ width: 125 }}>縦の分割数: {palettePreview.height}</div>
-          <input type="range" value={palettePreview.height}
-            max={20}
-            onChange={e => {
-              const height = e.target.valueAsNumber;
-              setPalettePreview(old => ({
-                ...old,
-                height,
-                colors: rgbGradation(old.width, height, cornerColor),
-              }));
-            }} />
-        </div>
-      </div >
-
-      <div style={{ display: "flex" }}>
-        {
-          cornerColor.map((color, i) =>
-            <div key={i} style={{ display: "flex", flexDirection: "column" }}>
-              {i === 0 ? "左上の色" : i === 1 ? "右上の色" : "左下の色"}
-              <div style={{ display: "flex" }}>
-                <div style={{ width: 60 }}>R: {color[0]}</div>
-                <input type="range" value={color[0]} max={255}
-                  onChange={e => changeColor(i, 0, e.target.valueAsNumber)}
-                />
-              </div>
-              <div style={{ display: "flex" }}>
-                <div style={{ width: 60 }}>G: {color[1]}</div>
-                <input type="range" value={color[1]} max={255}
-                  onChange={e => changeColor(i, 1, e.target.valueAsNumber)}
-                />
-              </div>
-              <div style={{ display: "flex" }}>
-                <div style={{ width: 60 }}>B: {color[2]}</div>
-                <input type="range" value={color[2]} max={255}
-                  onChange={e => changeColor(i, 2, e.target.valueAsNumber)}
-                />
-              </div>
-            </div>
-          )
-        }
-      </div>
-
+      </fieldset>
       <ShowPalettePreview
         width={palettePreview.width}
         height={palettePreview.height}
         colors={palettePreview.colors}
-
       />
     </>
   );
