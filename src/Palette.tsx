@@ -3,42 +3,25 @@ import { PaletteState } from "./PaletteState";
 import { useState } from "react";
 import { ShowPalettePreview } from "./PalettePreview";
 import { optionsState } from "./Options";
-import { useRecoilValue } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 
-// export const paletteState = atom<PaletteState>({
-//   key: "paletteState",
-//   default: PaletteState.create(
-//     10,
-//     10,
-//     [
-//       [240, 120, 120],
-//       [120, 240, 120],
-//       [120, 120, 240]
-//     ])
-// });
+export const paletteState = atom<PaletteState>({
+  key: "paletteState",
+  default: null!,
+});
 
-
-export function Palette({ paletteState }: { paletteState: PaletteState; }) {
+export function Palette() {
   const options = useRecoilValue(optionsState);
 
-  const [palette, setPalette] = useState(paletteState);
-  const [clear, setClear] = useState(false);
-  const { tiles } = palette;
+  const [palette, setPalette] = useRecoilState(paletteState);
 
   const selectTile = (index: number) => {
     const newPalette = PaletteState.selectTile(palette, index);
     setPalette(newPalette);
-    setClear(PaletteState.isClear(newPalette));
   };
 
   return (
     <div>
-      {
-        !clear ? undefined :
-          <div>
-            クリア
-          </div>
-      }
 
       <div style={{
         margin: 20,
@@ -50,8 +33,8 @@ export function Palette({ paletteState }: { paletteState: PaletteState; }) {
         // display: "flex",
         // flexWrap: "wrap",
       }}>
-        <div className="palette" style={{ width: 80 * paletteState.width, height: 80 * paletteState.height }}>
-          {tiles.map((v, i) => {
+        <div className="palette" style={{ width: 80 * palette.width, height: 80 * palette.height }}>
+          {palette.tiles.map((v, i) => {
             const selected = palette.select === i;
             const fitted = v === i;
 
@@ -62,9 +45,9 @@ export function Palette({ paletteState }: { paletteState: PaletteState; }) {
         {
           options.preview === "show" ?
             <ShowPalettePreview
-              width={paletteState.width}
-              height={paletteState.height}
-              colors={paletteState.colors}
+              width={palette.width}
+              height={palette.height}
+              colors={palette.colors}
               scale={0.5}
             /> : undefined
         }

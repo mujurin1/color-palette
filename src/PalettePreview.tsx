@@ -47,6 +47,7 @@ export function PalettePreview() {
           <div style={{ display: "flex" }}>
             <div style={{ width: 125 }}>横の分割数: {palettePreview.width}</div>
             <input type="range" value={palettePreview.width}
+              min={2}
               max={20}
               onChange={e => {
                 const width = e.target.valueAsNumber;
@@ -61,6 +62,7 @@ export function PalettePreview() {
           <div style={{ display: "flex" }}>
             <div style={{ width: 125 }}>縦の分割数: {palettePreview.height}</div>
             <input type="range" value={palettePreview.height}
+              min={2}
               max={20}
               onChange={e => {
                 const height = e.target.valueAsNumber;
