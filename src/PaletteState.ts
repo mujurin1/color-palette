@@ -5,7 +5,7 @@ export interface PaletteState {
   height: number;
   tiles: number[];
 
-  readonly preview: COLOR[];
+  readonly colors: COLOR[];
   select: number | undefined;
 
   hold: undefined | {
@@ -20,15 +20,8 @@ export interface PaletteState {
 }
 
 export const PaletteState = {
-  // isSelect: (palette: PaletteState, tile: TileState): boolean => {
-  //   const select = palette.select;
-  //   if (select == null) return false;
-
-  //   return select.x === tile.x && select.y === tile.y;
-  // },
   isClear: (palette: PaletteState): boolean => {
     return palette.tiles.every((a, b) => a === b);
-    // return palette.tiles.every(tile => tile.x === tile.answerX && tile.y === tile.answerY);
   },
 
   create: (
@@ -44,7 +37,7 @@ export const PaletteState = {
       width,
       height,
       tiles,
-      preview: colors,
+      colors: colors,
 
       select: undefined,
       hold: undefined,
