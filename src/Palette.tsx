@@ -2,7 +2,7 @@ import { rgbToCssString } from "./lib";
 import { PaletteState } from "./PaletteState";
 import { useState } from "react";
 import { ShowPalettePreview } from "./PalettePreview";
-import { Options, optionsState } from "./Options";
+import { optionsState } from "./Options";
 import { useRecoilValue } from "recoil";
 
 // export const paletteState = atom<PaletteState>({

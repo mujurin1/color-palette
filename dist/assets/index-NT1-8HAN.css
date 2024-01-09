@@ -1,0 +1,1 @@
+.palette{position:relative;box-sizing:border-box}.tile{position:absolute;width:80px;height:80px;box-sizing:border-box;display:flex;align-items:center;justify-content:center}.tile-fitted:after{content:"★";top:50%;left:50%}.tile-select{transform:scale(1.2);z-index:1}.options{margin:10px}
