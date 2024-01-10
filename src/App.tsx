@@ -91,8 +91,6 @@ function Play({ state, finish }: PlayParam) {
 }
 
 function Other() {
-  const formLink = "https://docs.google.com/forms/d/e/1FAIpQLSdK0unzLNfHoLijUokcxq7jIXW2SQUjJNNCq6cBnNqBMta4UA/viewform";
-
   return (
     <div style={{ marginTop: "50px" }}>
       <hr />
@@ -107,7 +105,7 @@ function Other() {
         <br /><br />
 
         フォームを設置しました<br />
-        要望・不具合その他あれば<NewTab href={formLink}>こちら
+        要望・不具合その他あれば<NewTab href="https://forms.gle/3Ev6gDoAdEhT5sc66">こちら
         </NewTab>からお願いします
 
         <div style={{ marginBottom: "50px" }} />
