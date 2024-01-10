@@ -4,8 +4,9 @@ import { Palette, paletteState } from "./Palette";
 import { PaletteState } from "./PaletteState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Options } from "./Options";
-import "./App.css";
 import { formatTime } from "./lib";
+
+import "./App.css";
 
 interface PlayState {
   startTime: number;
@@ -35,6 +36,8 @@ function App() {
         : <Play state={state} finish={() => setState(undefined)} />
       }
       <Options />
+
+      <Other />
     </div >
   );
 }
@@ -45,6 +48,7 @@ function Setup({ start }: { start: () => void; }) {
       <button onClick={start}>
         開始
       </button>
+
       <PalettePreview />
     </div>
   );
@@ -83,6 +87,51 @@ function Play({ state, finish }: PlayParam) {
         パレット設定に戻る (プレイ中のデータは消えます)
       </button>
     </div>
+  );
+}
+
+function Other() {
+  const formLink = "https://docs.google.com/forms/d/e/1FAIpQLSdK0unzLNfHoLijUokcxq7jIXW2SQUjJNNCq6cBnNqBMta4UA/viewform";
+
+  return (
+    <div style={{ marginTop: "50px" }}>
+      <hr />
+      <details>
+        <summary>？</summary>
+
+        制作者: むじゅりん<br />
+        Twitter: <NewTab href="https://twitter.com/mujurin_2525">mujurin_2525</NewTab><br />
+        Github: <NewTab href="https://github.com/mujurin1">https://github.com/mujurin1</NewTab><br />
+        このサイトの Github: <NewTab href="https://github.com/mujurin1/color-palette">https://github.com/mujurin1/color-palette</NewTab>
+
+        <br /><br />
+
+        フォームを設置しました<br />
+        要望・不具合その他あれば<NewTab href={formLink}>こちら
+        </NewTab>へどうぞ
+
+        <div style={{ marginBottom: "50px" }} />
+      </details>
+    </div>
+  );
+}
+
+type NewTabParam = {
+  href: string;
+  children: React.ReactNode;
+};
+
+function NewTab(param: NewTabParam) {
+  return (
+    <a href={param.href} target="_blank">
+      {param.children}
+      {/* <span
+        className="material-symbols-outlined"
+        style={{ fontSize: "medium" }}
+      >
+        open_in_new
+      </span> */}
+    </a>
   );
 }
 
