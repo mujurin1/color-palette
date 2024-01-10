@@ -108,7 +108,7 @@ function Other() {
 
         フォームを設置しました<br />
         要望・不具合その他あれば<NewTab href={formLink}>こちら
-        </NewTab>へどうぞ
+        </NewTab>からお願いします
 
         <div style={{ marginBottom: "50px" }} />
       </details>
