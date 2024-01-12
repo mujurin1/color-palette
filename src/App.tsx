@@ -38,7 +38,7 @@ function App() {
       <Options />
 
       <Other />
-    </div >
+    </div>
   );
 }
 

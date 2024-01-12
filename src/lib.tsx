@@ -98,9 +98,9 @@ export function randomRgb(min = 120, max = 240): COLOR {
   const sa = max - min;
   return [
     // Math.round()
-    Math.random() * sa + min,
-    Math.random() * sa + min,
-    Math.random() * sa + min,
+    Math.floor(Math.random() * sa + min),
+    Math.floor(Math.random() * sa + min),
+    Math.floor(Math.random() * sa + min),
   ];
 }
 

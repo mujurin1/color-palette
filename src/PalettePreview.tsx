@@ -1,6 +1,5 @@
 import { atom, useRecoilState } from "recoil";
-import { COLOR, rgbGradation, rgbToCssString } from "./lib";
-import { useState } from "react";
+import { COLOR, randomRgb, rgbGradation, rgbToCssString } from "./lib";
 
 const defaultCorner: [COLOR, COLOR, COLOR] = [
   [240, 120, 120],
@@ -18,25 +17,37 @@ export interface PalettePreview {
 export const palettePreviewState = atom<PalettePreview>({
   key: "palettePreviewState",
   default: {
-    width: 7,
+    width: 10,
     height: 7,
     cornerColor: defaultCorner,
-    colors: rgbGradation(7, 7, defaultCorner),
+    colors: rgbGradation(10, 7, defaultCorner),
   }
 });
 
 export function PalettePreview() {
-  const [cornerColor, setCornerColor] = useState(defaultCorner);
   const [palettePreview, setPalettePreview] = useRecoilState(palettePreviewState);
 
   const changeColor = (i: number, rgbIndex: number, color: number) => {
-    const newState: [COLOR, COLOR, COLOR] = [...cornerColor];
+    const cornerColor: [COLOR, COLOR, COLOR] = [...palettePreview.cornerColor];
 
-    newState[i] = [...newState[i]];
-    newState[i][rgbIndex] = color;
+    cornerColor[i] = [...cornerColor[i]];
+    cornerColor[i][rgbIndex] = color;
 
-    setCornerColor(newState);
-    setPalettePreview(v => ({ ...v, cornerColor: newState, colors: rgbGradation(v.width, v.height, newState) }));
+    setPalettePreview(v => ({ ...v, cornerColor, colors: rgbGradation(v.width, v.height, cornerColor) }));
+  };
+
+  const changeRandomColor = () => {
+    const cornerColor: [COLOR, COLOR, COLOR] = [
+      randomRgb(0, 255),
+      randomRgb(0, 255),
+      randomRgb(0, 255)
+    ];
+
+    setPalettePreview(v => ({
+      ...v,
+      cornerColor,
+      colors: rgbGradation(v.width, v.height, cornerColor)
+    }));
   };
 
   return (
@@ -54,7 +65,7 @@ export function PalettePreview() {
                 setPalettePreview(old => ({
                   ...old,
                   width,
-                  colors: rgbGradation(width, old.height, cornerColor),
+                  colors: rgbGradation(width, old.height, palettePreview.cornerColor),
                 }));
               }} />
           </div>
@@ -69,15 +80,16 @@ export function PalettePreview() {
                 setPalettePreview(old => ({
                   ...old,
                   height,
-                  colors: rgbGradation(old.width, height, cornerColor),
+                  colors: rgbGradation(old.width, height, palettePreview.cornerColor),
                 }));
-              }} />
+              }}
+            />
           </div>
-        </div >
+        </div>
 
         <div style={{ display: "flex" }}>
           {
-            cornerColor.map((color, i) =>
+            palettePreview.cornerColor.map((color, i) =>
               <div key={i} style={{ display: "flex", flexDirection: "column" }}>
                 {i === 0 ? "左上の色" : i === 1 ? "右上の色" : "左下の色"}
                 <div style={{ display: "flex" }}>
@@ -101,6 +113,11 @@ export function PalettePreview() {
               </div>
             )
           }
+
+          <div style={{ marginLeft: 40 }}>
+            <button onClick={changeRandomColor}>ランダムカラー</button>
+          </div>
+
         </div>
 
       </fieldset>
